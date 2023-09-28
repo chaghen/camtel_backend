@@ -1,0 +1,24 @@
+{% extends 'emails/base.html.twig' %} {% block title %}Souscription à l'offre {%
+endblock %} {% block body %}
+
+<p>
+  *Bonjour [Monsieur/Madame] {% block username %}
+  <strong>{{ username }}</strong>
+
+  {% endblock username %},
+</p>
+
+<p>
+  Merci d'avoir souscrit à notre offre {% block offre %} <b>{{ offre }}</b>
+</p>
+
+{% endblock offre %}
+<p>
+  Nos équipes vont procéder à une étude pour déterminer votre éligibilité à une
+  installation. Nous vous revenons une fois l'étude terminée pour suite de
+  procédure. Merci de votre confiance.
+</p>
+
+<p>Un point c'est Blue.*</p>
+
+{% endblock %}
