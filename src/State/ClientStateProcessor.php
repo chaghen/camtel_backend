@@ -38,7 +38,6 @@ class ClientStateProcessor implements ProcessorInterface
                 $client->setNom($data->getNom());
                 $this->em->persist($client);
                 $this->em->flush();
-                //$this->mailService->send($client->getEmail(), "sujet", "email", ["username" => $client->getNom(), "offre" => $client->getOffreChoisie()]);
             }
         }
     }
