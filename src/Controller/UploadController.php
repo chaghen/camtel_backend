@@ -70,7 +70,7 @@ class UploadController extends AbstractController
             $client->setUpdatedAt(new \DateTimeImmutable());
         }
 
-        $this->mailService->send($request->request->get('email'), "sujet", "client", ["username" => $request->request->get('nom'), "offre" => $request->request->get('offre_choisie')]);
+        // $this->mailService->send($request->request->get('email'), "sujet", "client", ["username" => $request->request->get('nom'), "offre" => $request->request->get('offre_choisie')]);
         return $client;
     }
 }
