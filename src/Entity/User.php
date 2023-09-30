@@ -45,6 +45,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column]
+    private ?int $id_partenaire = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -133,6 +136,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getIdPartenaire(): ?int
+    {
+        return $this->id_partenaire;
+    }
+
+    public function setIdPartenaire(int $id_partenaire): static
+    {
+        $this->id_partenaire = $id_partenaire;
 
         return $this;
     }

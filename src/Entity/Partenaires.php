@@ -63,9 +63,13 @@ class Partenaires implements PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(length: 255)]
     #[Groups(['partenaire:read', 'partenaire:read'])]
+    #[ORM\Column(length: 255)]
     private ?string $numero_cni = null;
+
+    #[Groups(['partenaire:read', 'partenaire:read'])]
+    #[ORM\Column(length: 255)]
+    private ?string $role = null;
 
     public function __construct()
     {
@@ -248,6 +252,18 @@ class Partenaires implements PasswordAuthenticatedUserInterface
     public function setNumeroCni(string $numero_cni): static
     {
         $this->numero_cni = $numero_cni;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): static
+    {
+        $this->role = $role;
 
         return $this;
     }

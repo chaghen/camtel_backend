@@ -30,7 +30,7 @@ use App\Controller\ClientsController;
         controller: ClientsController::class,
         deserialize: false
     )
-], normalizationContext: ["groups" => ['read']])]
+], normalizationContext: ["groups" => ['read']],)]
 
 class Clients
 {
@@ -105,11 +105,11 @@ class Clients
 
     #[Vich\UploadableField(mapping: "media_object", fileNameProperty: "cni_photo_recto")]
     #[Assert\NotNull(groups: ['media_object_create'])]
-    public ?File $file_recto = null;
+    public ?File $file_cni_recto = null;
 
     #[Vich\UploadableField(mapping: "media_object", fileNameProperty: "cni_photo_verso")]
     #[Assert\NotNull(groups: ['media_object_create'])]
-    public ?File $file_verso = null;
+    public ?File $file_cni_verso = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups('read')]
@@ -451,7 +451,7 @@ class Clients
      */
     public function getFileRecto(): ?File
     {
-        return $this->file_recto;
+        return $this->file_cni_recto;
     }
 
     /**
@@ -460,7 +460,7 @@ class Clients
      */
     public function setFileRecto(?File $file): void
     {
-        $this->file_recto = $file;
+        $this->file_cni_recto = $file;
     }
 
 
@@ -470,7 +470,7 @@ class Clients
      */
     public function setFileVerso(?File $file): void
     {
-        $this->file_verso = $file;
+        $this->file_cni_verso = $file;
     }
 
 
@@ -480,7 +480,7 @@ class Clients
      */
     public function getFileVerso(): ?File
     {
-        return $this->file_verso;
+        return $this->file_cni_verso;
     }
 
 

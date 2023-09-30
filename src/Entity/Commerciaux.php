@@ -114,6 +114,9 @@ class Commerciaux implements PasswordAuthenticatedUserInterface
     #[Groups(['commercial:read', 'commercial:create', 'partenaire:read'])]
     private ?string $numero_cni = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $role = null;
+
     public function __construct()
     {
         $this->clients = new ArrayCollection();
@@ -342,6 +345,18 @@ class Commerciaux implements PasswordAuthenticatedUserInterface
     public function setNumeroCni(string $numero_cni): static
     {
         $this->numero_cni = $numero_cni;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): static
+    {
+        $this->role = $role;
 
         return $this;
     }
