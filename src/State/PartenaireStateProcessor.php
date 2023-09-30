@@ -27,6 +27,7 @@ class PartenaireStateProcessor implements ProcessorInterface
                 $data->setUpdatedAt(new \DateTimeImmutable());
                 $data->setNumeroCni($data->getNumeroCni());
                 $data->setRole("ROLE_PARTENAIRE");
+                $data->setPrenom($data->getPrenom());
             }
             $this->em->persist($data);
             $this->em->flush();

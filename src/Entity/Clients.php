@@ -28,7 +28,7 @@ use App\Controller\ClientsController;
         name: 'publication',
         uriTemplate: '/client/create',
         controller: ClientsController::class,
-
+        deserialize: false,
         normalizationContext: ["groups" => ['read']]
     )
 ])]
