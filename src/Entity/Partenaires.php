@@ -67,10 +67,6 @@ class Partenaires implements PasswordAuthenticatedUserInterface
     #[Groups(['partenaire:read', 'partenaire:read'])]
     private ?string $numero_cni = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(['partenaire:read', 'partenaire:read', 'commercial:read', 'technicien:read'])]
-    private ?string $partenaire_type = null;
-
     public function __construct()
     {
         $this->techniciens = new ArrayCollection();
@@ -252,18 +248,6 @@ class Partenaires implements PasswordAuthenticatedUserInterface
     public function setNumeroCni(string $numero_cni): static
     {
         $this->numero_cni = $numero_cni;
-
-        return $this;
-    }
-
-    public function getPartenaireType(): ?string
-    {
-        return $this->partenaire_type;
-    }
-
-    public function setPartenaireType(string $partenaire_type): static
-    {
-        $this->partenaire_type = $partenaire_type;
 
         return $this;
     }

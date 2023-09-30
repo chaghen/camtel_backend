@@ -194,9 +194,9 @@ class Techniciens implements PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
+
 
     public function getPassword(): ?string
     {

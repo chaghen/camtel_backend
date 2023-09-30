@@ -32,13 +32,12 @@ class CommerciauxController extends AbstractController
         $commercial->setPassword(
             $this->passwordEncode->hashPassword($commercial, $request->request->get('password'))
         );
-
         $commercial->eraseCredentials();
         $commercial->setTelephone($request->request->get('telephone'));
         $partenaireId = $request->request->get('id_partenaire');
         $partenaire = $this->partenairesRepository->find($partenaireId);
 
-        if ($partenaire !== null && $partenaire->getPartenaireType() == "camtel") {
+        if ($partenaire !== null && $partenaire->getNom() == "camtel" && $partenaire->getId() == 1) {
             $commercial->setMatriculeCamtel($request->request->get('matricule_camtel'));
             $commercial->setAgenceAttache($request->request->get('agence_attache'));
         }

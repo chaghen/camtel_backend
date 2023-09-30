@@ -39,10 +39,11 @@ class TechniciensController extends AbstractController
         $partenaireId = $request->request->get('id_partenaire');
         $partenaire = $this->partenairesRepository->find($partenaireId);
 
-        if ($partenaire !== null && $partenaire->getPartenaireType() == "camtel") {
+        if ($partenaire !== null && $partenaire->getNom() == "camtel" && $partenaire->getId() == 1) {
             $technicien->setMatriculeCamtel($request->request->get('matricule_camtel'));
             $technicien->setCerafAttache($request->request->get('ceraf_attache'));
         }
+
         if ($partenaireId !== 0 && $partenaireId !== null) {
             $technicien->setIdPartenaire($partenaireId);
             $technicien->setPartenaire($partenaire);
