@@ -2,32 +2,28 @@
 // api/src/Controller/CreateMediaObjectAction.php
 namespace App\Controller;
 
-use App\Entity\Client;
+use App\Entity\Clients;
+use App\Repository\CommerciauxRepository;
+use App\Repository\PartenairesRepository;
 use App\Service\MailService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 
-class UploadController extends AbstractController
+class ClientsController extends AbstractController
 {
-    public function __construct(private MailService $mailService)
+    public function __construct(private MailService $mailService, private PartenairesRepository $partenairesRepository, private CommerciauxRepository $commerciauxRepository)
     {
     }
-    public function __invoke(Request $request): Client
+    public function __invoke(Request $request): Clients
     {
         $fileRecto = $request->files->get('file_recto');
         $fileVerso = $request->files->get('file_verso');
-        // if (!$uploadedFile) {
-        //     throw new BadRequestHttpException('"file" is required');
-        // }
-
-
-        $client = new Client();
+        $profilePhoto = $request->files->get('file_profil');
+        $client = new Clients();
         $client->setCreatedAt(new \DateTimeImmutable());
-        $client->setRegion($request->request->get('region'));
         $client->setVille($request->request->get('ville'));
+        $client->setRegion($request->request->get('region'));
         $client->setLocalisation($request->request->get('localisation'));
         $client->setEmail($request->request->get('email'));
         $client->setCni($request->request->get('cni'));
@@ -38,8 +34,28 @@ class UploadController extends AbstractController
         $client->setUpdatedAt(new \DateTimeImmutable());
         $client->setCniPhotoRecto("sdfsdsdgdf");
         $client->setCniPhotoVerso("hjhjhjh");
+        $client->setPhotoProfile("gfdgdfg");
+        $client->setFileProfile($profilePhoto);
+        $client->setUpdatedAt(new \DateTimeImmutable());
         $client->setNom($request->request->get('nom'));
         $client->setTelephoneUn($request->request->get('telephone_un'));
+        $commerialId = intval($request->request->get('commercial_id'));
+        $partenaireId = intval($request->request->get('partenaire_id'));
+        if ($partenaireId !== 0 && $partenaireId !== null) {
+            $partenaire = $this->partenairesRepository->find($partenaireId);
+            $client->setPartenaire($partenaire);
+            $client->setIdPartenaire($partenaireId);
+        } else {
+            $client->setIdPartenaire(0);
+        }
+
+        if ($commerialId !== 0 && $commerialId !== null) {
+            $commerial = $this->commerciauxRepository->find($commerialId);
+            $client->setCommercial($commerial);
+            $client->setIdCommercial($commerialId);
+        } else {
+            $client->setIdCommercial(0);
+        }
         if ($request->request->get('telephone_deux') !== null) {
             $client->setTelephoneUn($request->request->get('telephone_deux'));
         }
