@@ -37,7 +37,7 @@ class Partenaires implements PasswordAuthenticatedUserInterface
     private ?string $nom = null;
 
     #[Assert\NotBlank(message: "email est obligatoire")]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     #[Groups(['partenaire:read', 'partenaire:create', 'commercial:read', 'technicien:read'])]
     private ?string $email = null;
 
@@ -47,7 +47,7 @@ class Partenaires implements PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column]
-    #[Groups(['partenaire:read', 'partenaire:read', 'commercial:read', 'technicien:read'])]
+    #[Groups(['partenaire:read', 'partenaire:create', 'commercial:read', 'technicien:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\OneToMany(mappedBy: 'partenaire', targetEntity: Techniciens::class, orphanRemoval: true)]
@@ -63,13 +63,19 @@ class Partenaires implements PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[Groups(['partenaire:read', 'partenaire:read'])]
+    #[Assert\NotBlank(message: "Le numero de cni est obligatoire")]
+    #[Groups(['partenaire:read', 'partenaire:create'])]
     #[ORM\Column(length: 255)]
     private ?string $numero_cni = null;
 
-    #[Groups(['partenaire:read', 'partenaire:read'])]
+    #[Groups(['partenaire:read', 'partenaire:create'])]
     #[ORM\Column(length: 255)]
     private ?string $role = null;
+
+    #[Assert\NotBlank(message: "Le prénom est obligatoire")]
+    #[ORM\Column(length: 255)]
+    #[Groups(['partenaire:read', 'partenaire:create'])]
+    private ?string $prenom = null;
 
     public function __construct()
     {
@@ -264,6 +270,18 @@ class Partenaires implements PasswordAuthenticatedUserInterface
     public function setRole(string $role): static
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): static
+    {
+        $this->prenom = $prenom;
 
         return $this;
     }

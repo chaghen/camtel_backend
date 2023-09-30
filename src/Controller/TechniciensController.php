@@ -13,7 +13,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class TechniciensController extends AbstractController
 {
-    public function __construct(private MailService $mailService, private PartenairesRepository $partenairesRepository, private TechniciensRepository $commerciauxRepository, private UserPasswordHasherInterface $passwordEncode)
+    public function __construct(private MailService $mailService, private PartenairesRepository $partenairesRepository, private TechniciensRepository $technicienRepository, private UserPasswordHasherInterface $passwordEncode)
     {
     }
     public function __invoke(Request $request): Techniciens
@@ -21,13 +21,17 @@ class TechniciensController extends AbstractController
         $fileRecto = $request->files->get('file_photo');
         $technicien = new Techniciens();
         $technicien->setCreatedAt(new \DateTimeImmutable());
+        $emai_exist = $this->technicienRepository->findOneByEmail($request->request->get('email'));
         $technicien->setEmail($request->request->get('email'));
-
+        if ($emai_exist) {
+            return $this->json(["message" => "Cette adresse email existe déjà", 422]);
+        }
         $technicien->setLocalisation($request->request->get('localisation'));
         $technicien->setNumeroCni($request->request->get('numero_cni'));
         $technicien->setFileProfile($fileRecto);
         $technicien->setUpdatedAt(new \DateTimeImmutable());
-        $technicien->setPhoto("hhhhhh");
+        $technicien->setPhoto("photo");
+        $technicien->setRole("ROLE_TECHNICIEN");
         $technicien->setNom($request->request->get('nom'));
         $technicien->setPrenom($request->request->get('prenom'));
         $technicien->setPassword(

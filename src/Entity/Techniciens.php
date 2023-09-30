@@ -42,7 +42,7 @@ class Techniciens implements PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[Assert\NotBlank(message: "L'adresse email est obligatoire")]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     #[Groups(['technicien:read', 'technicien:create'])]
     private ?string $email = null;
 

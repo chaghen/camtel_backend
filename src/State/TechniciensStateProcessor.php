@@ -27,6 +27,7 @@ class TechniciensStateProcessor implements ProcessorInterface
                 $data->setCreatedAt(new \DateTimeImmutable());
                 $partenaire = $this->partenairesRepository->find($data->getIdPartenaire());
                 $data->setIdPartenaire($data->getIdPartenaire());
+                $data->setRole("ROLE_TECHNICIEN");
                 $data->setPartenaire($partenaire);
             }
             $this->em->persist($data);

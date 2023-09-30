@@ -22,10 +22,15 @@ class CommerciauxController extends AbstractController
         $commercial = new Commerciaux();
         $commercial->setCreatedAt(new \DateTimeImmutable());
         $commercial->setEmail($request->request->get('email'));
+        $emai_exist = $this->commerciauxRepository->findOneByEmail($request->request->get('email'));
+        if ($emai_exist) {
+            return $this->json(["message" => "Cette adresse email existe déjà", 422]);
+        }
         $commercial->setLocalisation($request->request->get('localisation'));
         $commercial->setNumeroCni($request->request->get('numero_cni'));
         $commercial->setPhoto("df");
         $commercial->setFileProfile($fileRecto);
+        $commercial->setRole("ROLE_COMMERCIAL");
         $commercial->setUpdatedAt(new \DateTimeImmutable());
         $commercial->setNom($request->request->get('nom'));
         $commercial->setPrenom($request->request->get('prenom'));

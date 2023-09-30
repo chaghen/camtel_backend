@@ -43,7 +43,7 @@ class Commerciaux implements PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[Assert\NotBlank(message: "Adresse email obligatoire")]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     #[Groups(['commercial:read', 'commercial:create', 'partenaire:read'])]
     private ?string $email = null;
 
