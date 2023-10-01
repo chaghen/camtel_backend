@@ -27,6 +27,7 @@ class LoginController extends AbstractController
         $password = $content['password'];
         $email = $content['email'];
         $typeCompte = $content['type_compte'];
+
         // $password =  $request->request->get('password');
         // $email = $request->request->get('email');
 
@@ -34,37 +35,53 @@ class LoginController extends AbstractController
 
         if ($typeCompte == "partenaires") {
             $user =  $this->partenairesRepository->findOneBy(['email' => $email]);
-            $match_user = $passwordHasher->isPasswordValid($user,  $password);
-            if ($match_user) {
-                $data = ["id" => $user->getId(), "idEntreprise" => $user->getId(), "role" => $user->getRole()];
-                return $this->json([$data, 200]);
+            if ($user) {
+                $match_user = $passwordHasher->isPasswordValid($user,  $password);
+                if ($match_user) {
+                    $data = ["id" => $user->getId(), "idEntreprise" => $user->getId(), "role" => $user->getRole()];
+                    return $this->json([$data, 200]);
+                } else {
+                    return $this->json(["vos identifiants ne matchent pas", 404]);
+                }
             } else {
                 return $this->json(["vos identifiants ne matchent pas", 404]);
             }
         } else if ($typeCompte == "techniciens") {
             $user =  $this->technicienRepository->findOneBy(['email' => $email]);
-            $match_user = $passwordHasher->isPasswordValid($user,  $password);
-            if ($match_user) {
-                $data = ["id" => $user->getId(), "idEntreprise" => $user->getId(), "role" => $user->getRole()];
-                return $this->json([$data, 200]);
+            if ($user) {
+                $match_user = $passwordHasher->isPasswordValid($user,  $password);
+                if ($match_user) {
+                    $data = ["id" => $user->getId(), "idEntreprise" => $user->getId(), "role" => $user->getRole()];
+                    return $this->json([$data, 200]);
+                } else {
+                    return $this->json(["vos identifiants ne matchent pas", 404]);
+                }
             } else {
                 return $this->json(["vos identifiants ne matchent pas", 404]);
             }
         } else if ($typeCompte == "commerciaux") {
             $user =  $this->commerciauxRepository->findOneBy(['email' => $email]);
-            $match_user = $passwordHasher->isPasswordValid($user,  $password);
-            if ($match_user) {
-                $data = ["id" => $user->getId(), "idEntreprise" => $user->getId(), "role" => $user->getRole()];
-                return $this->json([$data, 200]);
+            if ($user) {
+                $match_user = $passwordHasher->isPasswordValid($user,  $password);
+                if ($match_user) {
+                    $data = ["id" => $user->getId(), "idEntreprise" => $user->getId(), "role" => $user->getRole()];
+                    return $this->json([$data, 200]);
+                } else {
+                    return $this->json(["vos identifiants ne matchent pas", 404]);
+                }
             } else {
                 return $this->json(["vos identifiants ne matchent pas", 404]);
             }
         } else if ($typeCompte == "admin") {
             $user =  $this->partenairesRepository->findOneBy(['email' => $email]);
-            $match_user = $passwordHasher->isPasswordValid($user,  $password);
-            if ($match_user) {
-                $data = ["id" => $user->getId(), "idEntreprise" => $user->getId(), "role" => $user->getRole()];
-                return $this->json([$data, 200]);
+            if ($user) {
+                $match_user = $passwordHasher->isPasswordValid($user,  $password);
+                if ($match_user) {
+                    $data = ["id" => $user->getId(), "idEntreprise" => $user->getId(), "role" => $user->getRole()];
+                    return $this->json([$data, 200]);
+                } else {
+                    return $this->json(["vos identifiants ne matchent pas", 404]);
+                }
             } else {
                 return $this->json(["vos identifiants ne matchent pas", 404]);
             }

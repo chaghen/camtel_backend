@@ -3,9 +3,24 @@
 namespace App\Entity;
 
 use App\Repository\InstallationsRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Get;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: InstallationsRepository::class)]
+#[ApiResource(operations: [
+    new GetCollection(),
+    new Get(), new Delete(), new Put(), new Patch(),
+    new Post()
+])]
 class Installations
 {
     #[ORM\Id]
@@ -14,37 +29,65 @@ class Installations
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le téléphone est obligatoire")]
     private ?int $telephone = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le numéro de tid est obligatoire")]
     private ?string $numero_tid = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le numero Eid est obligatoire")]
     private ?string $numero_eid = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le numero d'index est obligatoire")]
     private ?string $numero_index = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le numero Eqn est obligatoire")]
     private ?string $numero_eqn = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "La distance cable est obligatoire")]
     private ?int $distance_cable = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le numero de serie ONT est obligatoire")]
     private ?string $numero_serie_ont = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le numero de serie stb est obligatoire")]
     private ?string $numero_serie_stb = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le nombre de poteaux est obligatoire")]
     private ?int $nombre_poteau = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le resultat de test connexion est obligatoire")]
     private ?string $resultat_test_connexion = null;
 
+    #[ORM\ManyToOne(inversedBy: 'installations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Partenaires $prospecteur = null;
+
+    #[ORM\ManyToOne(inversedBy: 'installations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Techniciens $technicien = null;
+
     #[ORM\Column(length: 255)]
-    private ?string $prospecteur = null;
+    #[Assert\NotBlank(message: "Le conseiller client est obligatoire")]
+    private ?string $conseiller_client = null;
+
+    #[ORM\ManyToOne(inversedBy: 'installations')]
+    private ?Techniciens $technicien_camtel = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $date_evaluation = null;
 
     public function getId(): ?int
     {
@@ -171,14 +214,74 @@ class Installations
         return $this;
     }
 
-    public function getProspecteur(): ?string
+    public function getProspecteur(): ?Partenaires
     {
         return $this->prospecteur;
     }
 
-    public function setProspecteur(string $prospecteur): static
+    public function setProspecteur(?Partenaires $prospecteur): static
     {
         $this->prospecteur = $prospecteur;
+
+        return $this;
+    }
+
+    public function getTechnicien(): ?Techniciens
+    {
+        return $this->technicien;
+    }
+
+    public function setTechnicien(?Techniciens $technicien): static
+    {
+        $this->technicien = $technicien;
+
+        return $this;
+    }
+
+    public function getConseillerClient(): ?string
+    {
+        return $this->conseiller_client;
+    }
+
+    public function setConseillerClient(string $conseiller_client): static
+    {
+        $this->conseiller_client = $conseiller_client;
+
+        return $this;
+    }
+
+    public function getTechnicienCamtel(): ?Techniciens
+    {
+        return $this->technicien_camtel;
+    }
+
+    public function setTechnicienCamtel(?Techniciens $technicien_camtel): static
+    {
+        $this->technicien_camtel = $technicien_camtel;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getDateEvaluation(): ?\DateTimeImmutable
+    {
+        return $this->date_evaluation;
+    }
+
+    public function setDateEvaluation(?\DateTimeImmutable $date_evaluation): static
+    {
+        $this->date_evaluation = $date_evaluation;
 
         return $this;
     }

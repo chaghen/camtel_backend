@@ -15,6 +15,7 @@ class EtudePrestataireValidation
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+
     private ?string $nom_prestataire = null;
 
     #[ORM\Column]

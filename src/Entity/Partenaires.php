@@ -77,11 +77,15 @@ class Partenaires implements PasswordAuthenticatedUserInterface
     #[Groups(['partenaire:read', 'partenaire:create'])]
     private ?string $prenom = null;
 
+    #[ORM\OneToMany(mappedBy: 'prospecteur', targetEntity: Installations::class)]
+    private Collection $installations;
+
     public function __construct()
     {
         $this->techniciens = new ArrayCollection();
         $this->commerciauxes = new ArrayCollection();
         $this->clients = new ArrayCollection();
+        $this->installations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -282,6 +286,36 @@ class Partenaires implements PasswordAuthenticatedUserInterface
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Installations>
+     */
+    public function getInstallations(): Collection
+    {
+        return $this->installations;
+    }
+
+    public function addInstallation(Installations $installation): static
+    {
+        if (!$this->installations->contains($installation)) {
+            $this->installations->add($installation);
+            $installation->setProspecteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInstallation(Installations $installation): static
+    {
+        if ($this->installations->removeElement($installation)) {
+            // set the owning side to null (unless already changed)
+            if ($installation->getProspecteur() === $this) {
+                $installation->setProspecteur(null);
+            }
+        }
 
         return $this;
     }

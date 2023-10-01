@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TechniciensRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\HttpFoundation\File\File;
@@ -111,6 +113,14 @@ class Techniciens implements PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $role = null;
+
+    #[ORM\OneToMany(mappedBy: 'technicien', targetEntity: Installations::class)]
+    private Collection $installations;
+
+    public function __construct()
+    {
+        $this->installations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -317,6 +327,36 @@ class Techniciens implements PasswordAuthenticatedUserInterface
     public function setRole(string $role): static
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Installations>
+     */
+    public function getInstallations(): Collection
+    {
+        return $this->installations;
+    }
+
+    public function addInstallation(Installations $installation): static
+    {
+        if (!$this->installations->contains($installation)) {
+            $this->installations->add($installation);
+            $installation->setTechnicien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInstallation(Installations $installation): static
+    {
+        if ($this->installations->removeElement($installation)) {
+            // set the owning side to null (unless already changed)
+            if ($installation->getTechnicien() === $this) {
+                $installation->setTechnicien(null);
+            }
+        }
 
         return $this;
     }
